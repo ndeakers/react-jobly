@@ -11,7 +11,7 @@
         ---> Will all routes using Switch
             "/"
             "/Companies" 
-                Companies---> Company Card, CompanySearchForm
+                CompaniesList---> Company Card, CompanySearchForm
             "/Companies/:handle"
                 CompanyJobList
             "/jobs"
