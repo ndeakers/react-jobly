@@ -20,8 +20,8 @@ class JoblyApi {
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${JoblyApi.token}` };
     const params = (method === "get")
-        ? data
-        : {};
+      ? data
+      : {};
 
     try {
       return (await axios({ url, method, data, params, headers })).data;
@@ -34,29 +34,97 @@ class JoblyApi {
 
   // Individual API routes
 
-  /** Get details on a company by handle. */
+  /** Get details on a company by handle. 
+   * takes in url parameter that represents the company handl
+   * getCompany(anderson-arias-morrow) ---->
+   * {
+  "company": {
+    "handle": "anderson-arias-morrow",
+    "name": "Anderson, Arias and Morrow",
+    "description": "Somebody program how I....",
+    "numEmployees": 245,
+    "logoUrl": "/logos/logo3.png",
+    "jobs": [
+      {
+        "id": 7,
+        "title": "Technical brewer",
+        "salary": 157000,
+        "equity": "0"
+      }, ......
+  }
+}
+  */
 
   static async getCompany(handle) {
-    let res = await this.request(`companies/${handle}`);
+    let res = await this.request(`companies/${handle}`);// consistent with slashes at end
     return res.company;
   };
 
- /** Get a list of all companies. */
+  /** Get a list of all companies. 
+   * 
+   * getAllCompanies() ----> 
+   * {
+  "companies": [
+    {
+      "handle": "anderson-arias-morrow",
+      "name": "Anderson, Arias and Morrow",
+      "description": "Somebody program how I....",
+      "numEmployees": 245,
+      "logoUrl": "/logos/logo3.png"
+    }, ......
+  ]
+}
+  */
+  static async getAllCompanies() {
+    let res = await this.request(`companies`);
+    return res.companies;
+  };
 
- static async getAllCompanies() {
-  let res = await this.request(`companies/`);
-  return res.companies;
-};
 
- /** Get a list of all companies by serach term. */
+  /** Get a list of all companies by serach term.
+   * 
+   * getCompaniesBySearchTerm(aria) -----> 
+   * {
+  "companies": [
+    {
+      "handle": "anderson-arias-morrow",
+      "name": "Anderson, Arias and Morrow",
+      "description": "Somebody program how I...",
+      "numEmployees": 245,
+      "logoUrl": "/logos/logo3.png"
+    }
+  ]
+}
+   * 
+   */
 
- static async getCompaniesBySearchTerm(searchTerm) {
-  let res = await this.request(`companies/?nameLike=${searchTerm}`);
-  return res.companies;
-};
+  static async getCompaniesBySearchTerm(searchTerm) {
+    let data = { name: searchTerm };
+    let res = await this.request(`companies`, data);
+    return res.companies;
+  };
 
 
-/** Get details on a job by ID. */
+  /** Get details on a job by ID.
+   * 
+   * getJob(200) ----->
+   * 
+   * {
+  "job": {
+    "id": 200,
+    "title": "Accommodation manager",
+    "salary": 126000,
+    "equity": null,
+    "company": {
+      "handle": "mejia-scott-ryan",
+      "name": "Mejia, Scott and Ryan",
+      "description": "General traditional late situation discussion dog. Before best up strategy about direction.",
+      "numEmployees": null,
+      "logoUrl": "/logos/logo4.png"
+    }
+  }
+}
+   */
 
   static async getJob(id) {
     let res = await this.request(`jobs/${id}`);
@@ -64,25 +132,57 @@ class JoblyApi {
   };
 
 
- /** Get a list of all jobs. */
+  /** Get a list of all jobs.
+   * 
+   * getAllJobs() ---->
+   * 
+   * {
+  "jobs": [
+    {
+      "id": 200,
+      "title": "Accommodation manager",
+      "salary": 126000,
+      "equity": null,
+      "companyHandle": "mejia-scott-ryan",
+      "companyName": "Mejia, Scott and Ryan"
+    }, .....
+  ]
+}
+   */
 
- static async getAllJobs() {
-  let res = await this.request(`jobs/`);
-  return res.jobs;
+  static async getAllJobs() {
+    let res = await this.request(`jobs`);
+    return res.jobs;
   };
 
 
- /** Get a list of all jobs by search term. */
+  /** Get a list of all jobs by search term.
+   * 
+   * getJobsBySearchTerm("manager") ----->
+   * {
+  "jobs": [
+    {
+      "id": 200,
+      "title": "Accommodation manager",
+      "salary": 126000,
+      "equity": null,
+      "companyHandle": "mejia-scott-ryan",
+      "companyName": "Mejia, Scott and Ryan"
+    },
+   */
+
+
 
   static async getjobsBySearchTerm(searchTerm) {
-    let res = await this.request(`jobs/?title=${searchTerm}`);
+    let data = { title: searchTerm };
+    let res = await this.request(`jobs`, data);
     return res.jobs;
-};
+  };
 
 
 }
 
 // for now, put token ("testuser" / "password" on class)
 JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
-    "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
-    "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+  "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
+  "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
