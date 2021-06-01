@@ -1,12 +1,13 @@
 import React from "react";
 
 /**
- * /CompanyList
- * Routes ---> CompanyList ---> CompanyCard
+ * /companies
+ * Routes ---> CompanyList ---> CompanySearchForm, CompanyCard
  * props: TODO ?
  * 
- * useParams--- get the companyhandle
- * state: comanyjobs--- an array of jobs
+ * fn: search function-- sets searchTerm
+ * state: companies--- an array of companies. used to render CompanyCard.
+ *        searchTerm.
  *  
  * */
 
