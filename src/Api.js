@@ -59,9 +59,9 @@ class JoblyApi {
     return res.company;
   };
 
-  /** Get a list of all companies. 
+  /** Get a list of companies. 
    * 
-   * getAllCompanies() ----> 
+   * getCompanies() ----> opitional search term to search for filter companies
    * {
   "companies": [
     {
@@ -73,68 +73,20 @@ class JoblyApi {
     }, ......
   ]
 }
-  */
-  static async getAllCompanies() {
-    console.log('insidegetallcompanies')
-    let res = await this.request(`companies`);
+*/
+
+  static async getCompanies(searchTerm) {
+    // console.log('insidegetallcompanies')
+    let data = searchTerm? { name: searchTerm } : {}; 
+    let res = await this.request(`companies/`,data);
     return res.companies;
   };
 
-
-  /** Get a list of all companies by serach term.
-   * 
-   * getCompaniesBySearchTerm(aria) -----> 
-   * {
-  "companies": [
-    {
-      "handle": "anderson-arias-morrow",
-      "name": "Anderson, Arias and Morrow",
-      "description": "Somebody program how I...",
-      "numEmployees": 245,
-      "logoUrl": "/logos/logo3.png"
-    }
-  ]
-}
-   * 
-   */
-
-  static async getCompaniesBySearchTerm(searchTerm) {
-    let data = { name: searchTerm };
-    let res = await this.request(`companies`, data);
-    return res.companies;
-  };
-
-
-  /** Get details on a job by ID.
-   * 
-   * getJob(200) ----->
-   * 
-   * {
-  "job": {
-    "id": 200,
-    "title": "Accommodation manager",
-    "salary": 126000,
-    "equity": null,
-    "company": {
-      "handle": "mejia-scott-ryan",
-      "name": "Mejia, Scott and Ryan",
-      "description": "General traditional late situation discussion dog. Before best up strategy about direction.",
-      "numEmployees": null,
-      "logoUrl": "/logos/logo4.png"
-    }
-  }
-}
-   */
-
-  static async getJob(id) {
-    let res = await this.request(`jobs/${id}`);
-    return res.job;
-  };
 
 
   /** Get a list of all jobs.
    * 
-   * getAllJobs() ---->
+   * getJobs() ----> opitional search term to search for filter jobs
    * 
    * {
   "jobs": [
@@ -150,37 +102,13 @@ class JoblyApi {
 }
    */
 
-  static async getAllJobs() {
-    let res = await this.request(`jobs`);
-    return res.jobs;
-  };
-
-
-  /** Get a list of all jobs by search term.
-   * 
-   * getJobsBySearchTerm("manager") ----->
-   * {
-  "jobs": [
-    {
-      "id": 200,
-      "title": "Accommodation manager",
-      "salary": 126000,
-      "equity": null,
-      "companyHandle": "mejia-scott-ryan",
-      "companyName": "Mejia, Scott and Ryan"
-    },
-   */
-
-
-
-  static async getjobsBySearchTerm(searchTerm) {
-    let data = { title: searchTerm };
-    let res = await this.request(`jobs`, data);
+  static async getJobs(searchTerm) {
+    let data = searchTerm ? { title: searchTerm } : {};
+    let res = await this.request(`jobs/`, data);
     return res.jobs;
   };
 
 }
-
 
 // for now, put token ("testuser" / "password" on class)
 JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
