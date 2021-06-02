@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import JoblyApi from './api';
 import CompanyCard from './CompanyCard';
+import SearchForm from './SearchForm';
 
 
 /**
@@ -27,8 +28,13 @@ function CompanyList() {
   }, [])
 
 
+//Todo define handle save function
+
   return (
     <div className='CompanyList'>
+      <div>
+        <SearchForm /> 
+      </div>
       {companies.map(comp => (<div key={comp.handle}> <CompanyCard company={comp} /> </div>))}
     </div>)
 }
