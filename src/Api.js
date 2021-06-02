@@ -54,7 +54,6 @@ class JoblyApi {
   }
 }
   */
-
   static async getCompany(handle) {
     let res = await this.request(`companies/${handle}`);// consistent with slashes at end
     return res.company;
