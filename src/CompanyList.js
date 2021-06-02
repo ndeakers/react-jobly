@@ -17,6 +17,7 @@ import SearchForm from './SearchForm';
 
 function CompanyList() {
   const [companies, setCompanies] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(function fetchCompanyList() {
     async function fetchCompanies() {
@@ -27,13 +28,27 @@ function CompanyList() {
     fetchCompanies();
   }, [])
 
+  useEffect(function fetchCompaniesBySearch() {
+    async function searchCompanies() {
+      const searchRes = await JoblyApi.getCompaniesBySearchTerm(searchTerm)
+      setCompanies(searchRes);
+    }
+    searchCompanies();
+  }, [searchTerm])
 
-//Todo define handle save function
+
+  function handleSave(formData) {
+    console.log("handleSave formData", formData)
+    setSearchTerm(formData.searchForm);
+  }
+
+
+  //Todo define handle save function
 
   return (
     <div className='CompanyList'>
       <div>
-        <SearchForm /> 
+        <SearchForm handleSave={handleSave} />
       </div>
       {companies.map(comp => (<div key={comp.handle}> <CompanyCard company={comp} /> </div>))}
     </div>)
