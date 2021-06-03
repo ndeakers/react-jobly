@@ -22,7 +22,7 @@ function LoginForm({ handleLogin }) {
     }));
   }
 
-
+  // handles the login to set the token. redirects to home on success
   async function handleSubmit(evt) {
     evt.preventDefault();
     const response = await handleLogin(formData);

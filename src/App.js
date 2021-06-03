@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from './Routes';
 import NavBar from './NavBar';
@@ -6,16 +6,19 @@ import JoblyApi from "./Api";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import jwt_decode from "jwt-decode";
-
+import UserContext from "./userContext";
 
 
 
 
 /**
- * state: 
- *  TODO : Still working on app state
- *  state- currentUser, token, applied jobs ?
-    fn- handleCurrentUser(), updateToken(), applyForJob() ?
+ * state: currentUser - { id, title, companyHandle, companyName, state }
+ * state: token: a token string
+ * state: errorMessages: array of error messages
+ * 
+    fn- handleLogin: makes call to get token and sets token
+    fn- handleSignUp: makes call to get token and sets token
+    useEffect: get currentUser and set to state.
  *  App ---> NavBar, Routes
  */
 
@@ -23,40 +26,41 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
-  
+
+  console.log("App currentUser", currentUser);
 
 
-  async function handleLogin(formData) { // await this in login. same in for signup
+  // gets token on login
+  async function handleLogin(formData) {
     try {
       const tokenRes = await JoblyApi.login(formData);
       console.log('tokenres', tokenRes)
       setToken(tokenRes.token);
       return { success: true };
     } catch (err) {
-      return { success: false, errors: err }
+      return { success: false, errors: err } // throw here handle in login
     }
   }
-  // console.log('token', token)
 
+  // gets token on register
   async function handleSignUp(formData) {
     try {
       const tokenRes = await JoblyApi.register(formData);
       setToken(tokenRes.token);
       return { success: true };
     } catch (err) {
-      return { success: false, errors: err }
+      return { success: false, errors: err } // throw here and handle in sign up
     }
   }
 
-
+  // decodes the token and puts payload on currentUser
   useEffect(function fetchCurrentUser() {
     async function fetchUser() {
-      
+
       try {
-        const decodedToken = jwt_decode(token);
-        console.log('decodedToken', decodedToken)
+        const { username } = jwt_decode(token);
         JoblyApi.token = token;
-        const user = await JoblyApi.getUser(decodedToken.username);
+        const user = await JoblyApi.getUser(username);
 
         console.log('user', user)
         setCurrentUser(user);
@@ -78,8 +82,10 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar />
-        <Routes handleLogin={handleLogin} handleSignUp={handleSignUp} errorMessages={errorMessages} />
+        <UserContext.Provider value={currentUser}>
+          <NavBar />
+          <Routes handleLogin={handleLogin} handleSignUp={handleSignUp} errorMessages={errorMessages} />
+        </UserContext.Provider>
       </BrowserRouter>
 
     </div>

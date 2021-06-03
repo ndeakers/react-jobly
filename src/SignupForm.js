@@ -33,6 +33,7 @@ function SignupForm({ handleSignUp }) {
     }));
   }
 
+  // handles the sign up to set the token. redirects to home on success
   async function handleSubmit(evt) {
     evt.preventDefault();
     const response = await handleSignUp(formData);
