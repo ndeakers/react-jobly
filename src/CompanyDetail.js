@@ -30,32 +30,48 @@ import DisplayError from "./DisplayError";
 
 function CompanyDetail() {
   const { handle } = useParams();
-  const [companyJobs, setCompanyJobs] = useState([]); // store whole company in state
+  const [company, setCompany] = useState([]); 
   const [errorMessages, setErrorMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   /** makes API request to get jobs for a company */
   useEffect(function fetchCompanyJobList() {
-    async function fetchJobs() {
-      let jobs;
+    async function fetchCompanies() {
+
       try {
-        const jobsRes = await JoblyApi.getCompany(handle);
-        console.log('jobsres', jobsRes)
-        jobs = jobsRes.jobs;
-        console.log('jobs', jobs)
-        setCompanyJobs(jobs);
+        const companyRes = await JoblyApi.getCompany(handle);
+       setCompany(companyRes);
       } catch (err) {
-        setErrorMessages(err);
+        setErrorMessages(err);  
+      } finally{
+        setIsLoading(false)
       }
     }
-    fetchJobs();
+    fetchCompanies();
   }, [handle]);
+  
+  if (isLoading) {
+    console.log('isloadingtrue')
+    return (
+      <div>
+        <i className="fas fa-spinner fa-pulse"></i>
+        <h2>Loading...</h2>
+      </div>
+    )
+  }
 
-  // TODO add name and header for individual company
   return (<div className="CompanyDetail">
     {errorMessages.length !== 0
       ? <DisplayError errors={errorMessages} />
-      : <JobCardList jobs={companyJobs} />}
-  </div>)
+      : 
+      <div>
+        <h2>{company.handle}</h2>
+        <p>{company.description}</p>
+        <JobCardList jobs={company.jobs} />
+      </div> }
+  </div>
+  )
 }
 
 export default CompanyDetail;
+

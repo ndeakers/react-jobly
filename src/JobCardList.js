@@ -1,4 +1,5 @@
 import React from "react";
+import CompanyDetail from "./CompanyDetail";
 import JobCard from "./JobCard";
 
 
@@ -24,7 +25,10 @@ import JobCard from "./JobCard";
  * */
 
 
-function JobCardList({ jobs }) { // TODO just pass what we need to JobCard
+
+function JobCardList({jobs}) { // TODO just pass what we need to JobCard
+
+  console.log('jobsCardList--->>', jobs)
   return (
     <div className='JobCardList'>
       {jobs.map(job => (<div key={job.id}> <JobCard job={job} /> </div>))}
@@ -32,3 +36,7 @@ function JobCardList({ jobs }) { // TODO just pass what we need to JobCard
 }
 
 export default JobCardList;
+
+
+
+

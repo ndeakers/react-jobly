@@ -32,6 +32,7 @@ function JobList() {
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   //**Fetch a list of all jobs on first render*/
   useEffect(function fetchJobList() {
@@ -55,6 +56,8 @@ function JobList() {
         setJobs(searchRes);
       } catch (err) {
         setErrorMessages(err);
+      }finally {
+        setIsLoading(false);
       }
     }
     searchJobs();
@@ -62,13 +65,22 @@ function JobList() {
 
   //** sets searchTerm after submit. 
   function handleSave(formData) {
-    setSearchTerm(formData.searchForm);
+    // setSearchTerm(formData.searchForm);
+    setSearchTerm(formData);
   }
 
+  if (isLoading) {
+    return (
+      <div>
+        <i className="fas fa-spinner fa-pulse"></i>
+        <h2>Loading...</h2>
+      </div>
+    )
+  }
   return (
     <div className='CompanyList'>
       <div>
-        <SearchForm handleSave={handleSave} />
+        <SearchForm handleSave={handleSave} searchTerm={searchTerm}/>
       </div>
       {errorMessages.length !== 0
         ? <DisplayError errors={errorMessages} />

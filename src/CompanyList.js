@@ -29,7 +29,7 @@ function CompanyList() {
   const [companies, setCompanies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
 
   //**Fetch a list of searched companies when search term state changes*/
   useEffect(function fetchCompaniesBySearch() {
@@ -39,20 +39,32 @@ function CompanyList() {
         setCompanies(searchRes);
       } catch (err) {
         setErrorMessages(err);
+      }finally{
+        setIsLoading(false);
       }
     }
     searchCompanies();
   }, [searchTerm])
 
+
   //** sets searchTerm after submit.
   function handleSave(searchData) {
     setSearchTerm(searchData);
   }
-  // TODO- dont clear search form. pass in searchTerm as a prop
+  
+  if (isLoading) {
+    return (
+      <div>
+        <i className="fas fa-spinner fa-pulse"></i>
+        <h2>Loading...</h2>
+      </div>
+    )
+  }
+
   return (
     <div className='CompanyList'>
       <div>
-        <SearchForm handleSave={handleSave} />
+        <SearchForm handleSave={handleSave} searchTerm={searchTerm}/>
       </div>
       {errorMessages.length !== 0
         ? <DisplayError errors={errorMessages} />

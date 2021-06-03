@@ -18,13 +18,13 @@ import Card from 'react-bootstrap/Card'
  * */
 
 function JobCard({ job }) { // destructure
-
+  const {title, salary, equity } = job;
   return (
     <Card className="card JobCard" style={{ marginBottom: "30x" }}>
       <Card.Body>
-        <Card.Title>{job.title}</Card.Title>
-        <Card.Text>Salary:{job.salary} </Card.Text>
-        <Card.Text>Equity: {job.equity} </Card.Text>
+        <Card.Title>{title}</Card.Title>
+        <Card.Text>Salary:{salary} </Card.Text>
+        <Card.Text>Equity: {equity} </Card.Text>
       </Card.Body>
     </Card>
   )
