@@ -5,6 +5,7 @@ import NavBar from './NavBar';
 import JoblyApi from "./Api";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { decodeToken } from "react-jwt";
 import DisplayError from './DisplayError';
 
 /**
@@ -19,8 +20,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
-  const [signUpData, setSignUpData] = useState(null);
-  const [loginData, setloginUpData] = useState(null);
+  // const [signUpData, setSignUpData] = useState(null);
+  // const [loginData, setloginUpData] = useState(null);
 
 
 
@@ -36,7 +37,7 @@ function App() {
   useEffect(function fetchTokenOnLogin() {
     async function fetchToken() {
       try {
-        const tokenRes = await JoblyApi.login(loginData);
+        const tokenRes = await JoblyApi.login(loginData); 
         setToken(tokenRes);
         console.log('tokenresinlogin--->>', tokenRes)
       } catch (err) {
@@ -56,6 +57,7 @@ function App() {
         const tokenRes = await JoblyApi.register(signUpData);
         console.log('tokenresinSignup--->>', tokenRes)
         setToken(tokenRes);
+
       } catch (err) {
         console.log('err in sign up', err)
         setErrorMessages(err);
@@ -81,3 +83,10 @@ function App() {
 }
 
 export default App;
+
+
+
+
+// const username = decodedToken.username;
+
+
