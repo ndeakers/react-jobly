@@ -5,6 +5,8 @@ import NavBar from './NavBar';
 import JoblyApi from "./Api";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import DisplayError from './DisplayError';
+
 /**
  * state: 
  *  TODO : Still working on app state
@@ -16,7 +18,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState("");
-  const [errorMessages, setErrorMessages] = useState(null);
+  const [errorMessages, setErrorMessages] = useState([]);
   const [signUpData, setSignUpData] = useState(null);
   const [loginData, setloginUpData] = useState(null);
 
@@ -36,11 +38,15 @@ function App() {
       try {
         const tokenRes = await JoblyApi.login(loginData);
         setToken(tokenRes);
+        console.log('tokenresinlogin--->>', tokenRes)
       } catch (err) {
+        console.log('err in lon in', err)
         setErrorMessages(err);
       }
     }
-    fetchToken();
+    if(loginData){
+       fetchToken();
+    }
   }, [loginData]);
 
 
@@ -48,12 +54,18 @@ function App() {
     async function fetchToken() {
       try {
         const tokenRes = await JoblyApi.register(signUpData);
+        console.log('tokenresinSignup--->>', tokenRes)
         setToken(tokenRes);
       } catch (err) {
+        console.log('err in sign up', err)
         setErrorMessages(err);
       }
     }
-    fetchToken();
+    console.log('signUpData---->>', signUpData)
+    if(signUpData){
+      fetchToken();
+    }
+    
   }, [signUpData]);
 
 
@@ -61,7 +73,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <NavBar />
-        <Routes />
+        <Routes handleLogin={handleLogin} handleSignUp={handleSignUp} errorMessages={errorMessages}/>
       </BrowserRouter>
 
     </div>
