@@ -39,11 +39,13 @@ function CompanyDetail() {
       let jobs;
       try {
         const jobsRes = await JoblyApi.getCompany(handle);
+        console.log('jobsres', jobsRes)
         jobs = jobsRes.jobs;
+        console.log('jobs', jobs)
+        setCompanyJobs(jobs);
       } catch (err) {
         setErrorMessages(err);
       }
-      setCompanyJobs(jobs);
     }
     fetchJobs();
   }, [handle]);

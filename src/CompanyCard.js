@@ -18,16 +18,17 @@ import Card from 'react-bootstrap/Card'
  *  Renders a card with company details.
  * */
 
-function CompanyCard({ company }) { // TODO: destructure here, add alt to image
+function CompanyCard({company}) { 
+    const {handle, logoUrl, description} = company;
     return (
 
         <Card className="CompanyCard" style={{ marginBottom: "30x" }}>
-            <Link to={`/companies/${company.handle}`} >
+            <Link to={`/companies/${handle}`} >
                 <Card.Body>
-                    <Card.Title>{company.handle}</Card.Title>
-                    <Card.Img src={company.logoUrl} style={{ width: "100px" }} />
+                    <Card.Title>{handle}</Card.Title>
+                    <Card.Img src={logoUrl} style={{ width: "100px" }} alt="logo"/>
                     <Card.Text>
-                        {company.description}
+                        {description}
                     </Card.Text>
                 </Card.Body>
             </Link>
