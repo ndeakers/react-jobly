@@ -106,6 +106,46 @@ class JoblyApi {
     return res.jobs;
   };
 
+  /** 
+  POST /auth/token:  { username, password } => { token }
+  *
+  * Returns JWT token which can be used to authenticate further requests.
+  
+*/
+  static async login(formData) {
+    let res = await this.request('auth/token/', formData, "post");
+    this.token = res;
+    return res;
+  }
+
+  /** Register
+   * 
+  POST /auth/register:   { user } => { token }
+ *
+ * FormData: { username, password, firstName, lastName, email }
+ *
+ * Returns JWT token which can be used to authenticate further requests.
+*/
+
+  static async register(formData) {
+    let res = await this.request('auth/register/', formData, "post");
+    this.token = res;
+    return res;
+  }
+
+  /** GET /[username] => { user }
+ * Returns { username, firstName, lastName, isAdmin, jobs }
+ *   where jobs is { id, title, companyHandle, companyName, state }
+ *
+ * Authorization required: admin or same user-as-:username
+ * */
+  static async getUser(username) {
+    let res = await this.request(`/users/${username}`);
+    console.log("getUser----> res", res);
+    return res.user;
+  }
+
+
 }
 
 // for now, put token ("testuser" / "password" on class)
