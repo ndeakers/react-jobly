@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
@@ -11,17 +11,19 @@ import DisplayError from './DisplayError';
  * */
 
 
-function SignupForm({handleSignUp, errorMessages}) {
+function SignupForm({ handleSignUp }) {
 
-const initialFormData = {
-  username:"",
-  password:"",
-  firstName:"",
-  lastName:"",
-  email:""
-}
+  const initialFormData = {
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: ""
+  }
 
-const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState(initialFormData);
+  const history = useHistory();
+  const [errorMessages, setErrorMessages] = useState([]);
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -31,56 +33,62 @@ const [formData, setFormData] = useState(initialFormData);
     }));
   }
 
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     evt.preventDefault();
-    handleSignUp(formData)
+    const response = await handleSignUp(formData);
+    if (response.success === true) {
+      setFormData(initialFormData);
+      history.push("/");
+    } else {
+      setErrorMessages([response.errors]);
+    }
   }
 
- 
+
 
   return (
-   
+
     <div className="container col-md-6 offset-md-3 col-lg-4 offset-lg-4">
       <h2>Sign Up</h2>
 
       {errorMessages.length !== 0
-      ? <DisplayError errors={errorMessages} />
-      : <></> }
+        ? <DisplayError errors={errorMessages} />
+        : <></>}
       <Form className="justify-content-center signupform" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formUsername">
           <Form.Label>Username</Form.Label>
-          <Form.Control type="text" placeholder="Enter username" 
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange} />
+          <Form.Control type="text" placeholder="Enter username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" 
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange} />
+          <Form.Control type="password" placeholder="Password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formFirstName">
           <Form.Label>First Name</Form.Label>
-          <Form.Control type="text" placeholder="First Name" 
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange} />
+          <Form.Control type="text" placeholder="First Name"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formLastName">
           <Form.Label>Last Name</Form.Label>
-          <Form.Control type="text" placeholder="Last Name" 
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange} />
+          <Form.Control type="text" placeholder="Last Name"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange} />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" 
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange} />
+          <Form.Control type="email" placeholder="Enter email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange} />
         </Form.Group>
         <Button variant="primary" type="submit">
           Sign Up

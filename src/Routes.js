@@ -14,7 +14,7 @@ import ProfileForm from './ProfileForm';
  * */
 
 
-function Routes({handleLogin, handleSignUp, errorMessages}) {
+function Routes({ handleLogin, handleSignUp, errorMessages }) {
     return (
         <Switch>
             <Route exact path="/">
@@ -30,10 +30,10 @@ function Routes({handleLogin, handleSignUp, errorMessages}) {
                 <JobList />
             </Route>
             <Route exact path="/login">
-                <LoginForm handleLogin={handleLogin} errorMessages={errorMessages}/>
+                <LoginForm handleLogin={handleLogin} />
             </Route>
             <Route exact path="/signup">
-                <SignupForm handleSignUp={handleSignUp} errorMessages={errorMessages}/>
+                <SignupForm handleSignUp={handleSignUp} />
             </Route>
             <Route exact path="/profile">
                 <ProfileForm />
