@@ -114,7 +114,7 @@ class JoblyApi {
 */
   static async login(formData) {
     let res = await this.request('auth/token/', formData, "post");
-    this.token = res;
+    console.log('register this.token', this.token)
     return res;
   }
 
@@ -129,7 +129,7 @@ class JoblyApi {
 
   static async register(formData) {
     let res = await this.request('auth/register/', formData, "post");
-    this.token = res;
+    console.log('register this.token', this.token)
     return res;
   }
 
@@ -140,18 +140,17 @@ class JoblyApi {
  * Authorization required: admin or same user-as-:username
  * */
   static async getUser(username) {
-    let res = await this.request(`/users/${username}`);
+    let res = await this.request(`users/${username}`);
     console.log("getUser----> res", res);
-    return res.user;
+    return res;
   }
-
 
 }
 
 // for now, put token ("testuser" / "password" on class)
-JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
-  "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
-  "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+// JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
+//   "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
+//   "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
 
 
 
