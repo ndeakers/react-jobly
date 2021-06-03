@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import JoblyApi from './api';
+import JoblyApi from './Api';
 import CompanyCard from './CompanyCard';
 import SearchForm from './SearchForm';
-
+import DisplayError from "./DisplayError";
 
 /**
  * /companies
@@ -12,7 +12,7 @@ import SearchForm from './SearchForm';
  * fn: handleSave function-- sets searchTerm after submit.
  * 
  * state: companies--- an array of companies. used to render CompanyCard.  
- * Example [{
+ * Example: [{
       "handle": "anderson-arias-morrow",
       "name": "Anderson, Arias and Morrow",
       "description": "Somebody program how I...",
@@ -20,52 +20,45 @@ import SearchForm from './SearchForm';
       "logoUrl": "/logos/logo3.png"
     },.....]
  *  state : searchTerm : string submitted from search form.
+    state: errorMessages ---- an array of errors to display if axios requests fails
  *  
- * 
  * Renders Seach form and a list of company cards.
  * */
 
 function CompanyList() {
   const [companies, setCompanies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
-
-  //**Fetch a list of all companies on first render*/
-  useEffect(function fetchCompanyList() {
-    async function fetchCompanies() {
-      const companiesRes = await JoblyApi.getCompanies();
-      // console.log('companiesRes--->>', companiesRes)
-      setCompanies(companiesRes);
-    }
-    fetchCompanies();
-  }, [])
+  const [errorMessages, setErrorMessages] = useState([]);
 
 
   //**Fetch a list of searched companies when search term state changes*/
   useEffect(function fetchCompaniesBySearch() {
     async function searchCompanies() {
-      // const searchRes = await JoblyApi.getCompaniesBySearchTerm(searchTerm)
-      const searchRes = await JoblyApi.getCompanies(searchTerm)
-      setCompanies(searchRes);
+      try {
+        const searchRes = await JoblyApi.getCompanies(searchTerm)
+        setCompanies(searchRes);
+      } catch (err) {
+        setErrorMessages(err);
+      }
     }
     searchCompanies();
   }, [searchTerm])
 
-
-
-  //** sets searchTerm after submit.  
-  function handleSave(formData) {
-    // console.log("handleSave formData", formData)
-    setSearchTerm(formData.searchForm);
+  //** sets searchTerm after submit.
+  function handleSave(searchData) {
+    setSearchTerm(searchData);
   }
-
+  // TODO- dont clear search form. pass in searchTerm as a prop
   return (
     <div className='CompanyList'>
       <div>
         <SearchForm handleSave={handleSave} />
       </div>
-      {companies.map(comp => (<div key={comp.handle}> <CompanyCard company={comp} /> </div>))}
-    </div>)
+      {errorMessages.length !== 0
+        ? <DisplayError errors={errorMessages} />
+        : <div> {companies.map(comp => (<div key={comp.handle}> <CompanyCard company={comp} /></div>))}
+        </div>}
+    </div >)
 };
 
 export default CompanyList;

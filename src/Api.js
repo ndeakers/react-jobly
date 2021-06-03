@@ -35,7 +35,7 @@ class JoblyApi {
   // Individual API routes
 
   /** Get details on a company by handle. 
-   * takes in url parameter that represents the company handl
+   * takes in url parameter that represents the company handle
    * getCompany(anderson-arias-morrow) ---->
    * {
   "company": {
@@ -59,9 +59,10 @@ class JoblyApi {
     return res.company;
   };
 
+
   /** Get a list of companies. 
    * 
-   * getCompanies() ----> opitional search term to search for filter companies
+   * getCompanies() ----> optional search term to search for filter companies
    * {
   "companies": [
     {
@@ -74,11 +75,9 @@ class JoblyApi {
   ]
 }
 */
-
   static async getCompanies(searchTerm) {
-    // console.log('insidegetallcompanies')
-    let data = searchTerm? { name: searchTerm } : {}; 
-    let res = await this.request(`companies/`,data);
+    let data = searchTerm ? { name: searchTerm } : {};
+    let res = await this.request(`companies/`, data);
     return res.companies;
   };
 
@@ -86,7 +85,7 @@ class JoblyApi {
 
   /** Get a list of all jobs.
    * 
-   * getJobs() ----> opitional search term to search for filter jobs
+   * getJobs() ----> optional search term to filter jobs
    * 
    * {
   "jobs": [
@@ -100,8 +99,7 @@ class JoblyApi {
     }, .....
   ]
 }
-   */
-
+ */
   static async getJobs(searchTerm) {
     let data = searchTerm ? { title: searchTerm } : {};
     let res = await this.request(`jobs/`, data);

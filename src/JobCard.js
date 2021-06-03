@@ -1,8 +1,5 @@
 import React from "react";
 import Card from 'react-bootstrap/Card'
-
-function JobCard({ job }) {
-
 /**
  * Routes ---> CompanyDetail ---> JobCardList ----> JobCard
  *        ----> JobList----> JobCardList----> JobCard
@@ -17,15 +14,17 @@ function JobCard({ job }) {
     }
  * 
  * state: none
- *  Renders a card with job details.
+ * Renders a card with job details.
  * */
+
+function JobCard({ job }) { // destructure
 
   return (
     <Card className="card JobCard" style={{ marginBottom: "30x" }}>
-       <Card.Body>
-       <Card.Title>{job.title}</Card.Title>
-       <Card.Text>Salary:{job.salary} </Card.Text>
-       <Card.Text>Equity: {job.equity} </Card.Text>
+      <Card.Body>
+        <Card.Title>{job.title}</Card.Title>
+        <Card.Text>Salary:{job.salary} </Card.Text>
+        <Card.Text>Equity: {job.equity} </Card.Text>
       </Card.Body>
     </Card>
   )

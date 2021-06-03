@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import JoblyApi from './api';
+import JoblyApi from './Api';
 import JobCardList from './JobCardList';
 import SearchForm from './SearchForm';
+import DisplayError from "./DisplayError";
 
 /**
- * /jobList
+ * /jobs
  * Routes ---> JobList
  * props: none
  * 
@@ -22,6 +23,7 @@ import SearchForm from './SearchForm';
     }, .....
   ]
  *  state : searchTerm : string submitted from search form.
+    state: errorMessages ---- array of errors to display if axios requests fails
  *  
  * 
  * Renders Seach form and a list of job cards.
@@ -29,32 +31,37 @@ import SearchForm from './SearchForm';
 function JobList() {
   const [jobs, setJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  
-  //**Fetch a list of all jobs on first render*/
+  const [errorMessages, setErrorMessages] = useState([]);
 
+  //**Fetch a list of all jobs on first render*/
   useEffect(function fetchJobList() {
     async function fetchJobs() {
-      const jobsRes = await JoblyApi.getJobs();
-      // console.log('jobsRes--->>', jobsRes)
-      setJobs(jobsRes);
+      try {
+        const jobsRes = await JoblyApi.getJobs();
+        setJobs(jobsRes);
+      } catch (err) {
+        setErrorMessages(err);
+      }
     }
     fetchJobs();
   }, [])
 
 
   //**Fetch a list of searched jobs when search term state changes*/
-
   useEffect(function fetchJobBySearch() {
     async function searchJobs() {
-      const searchRes = await JoblyApi.getJobs(searchTerm)
-      setJobs(searchRes);
+      try {
+        const searchRes = await JoblyApi.getJobs(searchTerm)
+        setJobs(searchRes);
+      } catch (err) {
+        setErrorMessages(err);
+      }
     }
     searchJobs();
   }, [searchTerm]);
 
   //** sets searchTerm after submit. 
   function handleSave(formData) {
-    // console.log("handleSave formData", formData)
     setSearchTerm(formData.searchForm);
   }
 
@@ -63,11 +70,11 @@ function JobList() {
       <div>
         <SearchForm handleSave={handleSave} />
       </div>
-      <div>
-            <JobCardList jobs={jobs}/> 
-      </div>
+      {errorMessages.length !== 0
+        ? <DisplayError errors={errorMessages} />
+        : <div><JobCardList jobs={jobs} /></div>}
     </div>
-    );
+  );
 };
 
 export default JobList;

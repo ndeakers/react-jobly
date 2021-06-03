@@ -6,7 +6,7 @@ import JobCard from "./JobCard";
  * /Jobs
  * Routes ---> CompanyDetails ---> jobCardList
  *        ----> jobList ---> jobCardList
- * props: jobs
+ * props: jobs: an array of jobs
  * Example:
  *  "jobs": [
     {
@@ -19,14 +19,14 @@ import JobCard from "./JobCard";
     }, .....
   ]
  * 
- * state:nonse 
+ * state: none 
  * Renders list of job cards components.
  * */
 
 
-function JobCardList({ jobs }) {
+function JobCardList({ jobs }) { // TODO just pass what we need to JobCard
   return (
-    <div className='CompanyList'>
+    <div className='JobCardList'>
       {jobs.map(job => (<div key={job.id}> <JobCard job={job} /> </div>))}
     </div>)
 }

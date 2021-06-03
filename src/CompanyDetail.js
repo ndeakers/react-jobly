@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import JoblyApi from './api';
+import JoblyApi from './Api';
 import JobCardList from "./JobCardList";
+import DisplayError from "./DisplayError";
 
 /**
  * /companies:handle
- * Routes ---> CompanDetail
+ * Routes ---> CompanyDetail
  * props: none
  * 
- * useParams--- get the companyhandle
- * state: comanyjobs--- an array of jobs   
+ * useParams--- gets the handle
+ * state: companyjobs--- an array of jobs   
  * Example:[
  *   "job": {
     "id": 200,
@@ -23,27 +24,35 @@ import JobCardList from "./JobCardList";
       "numEmployees": null,
       "logoUrl": "/logos/logo4.png"
     }, ....]
-
-* Renders jobCardList component.
+    state: errorMessages ---- displays an array errors if axios requests fails
+*   Renders jobCardList component.
 */
 
 function CompanyDetail() {
   const { handle } = useParams();
-  const [companyJobs, setCompanyJobs] = useState([]);
-  // console.log('CompanyDetail companyJobs --->', companyJobs);
+  const [companyJobs, setCompanyJobs] = useState([]); // store whole company in state
+  const [errorMessages, setErrorMessages] = useState([]);
 
+  /** makes API request to get jobs for a company */
   useEffect(function fetchCompanyJobList() {
     async function fetchJobs() {
-      const jobsRes = await JoblyApi.getCompany(handle);
-      const jobs = jobsRes.jobs;
-      console.log('jobsRes--->>', jobs);
+      let jobs;
+      try {
+        const jobsRes = await JoblyApi.getCompany(handle);
+        jobs = jobsRes.jobs;
+      } catch (err) {
+        setErrorMessages(err);
+      }
       setCompanyJobs(jobs);
     }
     fetchJobs();
-  }, [])
+  }, [handle]);
 
+  // TODO add name and header for individual company
   return (<div className="CompanyDetail">
-    <JobCardList jobs={companyJobs} />
+    {errorMessages.length !== 0
+      ? <DisplayError errors={errorMessages} />
+      : <JobCardList jobs={companyJobs} />}
   </div>)
 }
 

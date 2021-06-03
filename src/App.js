@@ -6,9 +6,9 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 /**
  * state: 
- *  TODO : Still working on app docstring
- *  state- currentUser, token, applied jobs
-    fn- handleCurrentUser(), updateToken(), applyForJob()
+ *  TODO : Still working on app state
+ *  state- currentUser, token, applied jobs ?
+    fn- handleCurrentUser(), updateToken(), applyForJob() ?
  *  App ---> NavBar, Routes
  */
 

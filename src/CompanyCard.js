@@ -18,7 +18,7 @@ import Card from 'react-bootstrap/Card'
  *  Renders a card with company details.
  * */
 
-function CompanyCard({ company }) {
+function CompanyCard({ company }) { // TODO: destructure here, add alt to image
     return (
 
         <Card className="CompanyCard" style={{ marginBottom: "30x" }}>
