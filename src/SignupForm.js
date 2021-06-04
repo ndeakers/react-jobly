@@ -38,14 +38,11 @@ function SignupForm({ handleSignUp }) {
     evt.preventDefault();
     const response = await handleSignUp(formData);
     if (response.success === true) {
-      setFormData(initialFormData);
       history.push("/");
     } else {
       setErrorMessages([response.errors]);
     }
   }
-
-
 
   return (
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button"
@@ -9,11 +9,13 @@ import DisplayError from './DisplayError';
  * state: formData
  * */
 
+//TODO docstring update
+
 function LoginForm({ handleLogin }) {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errorMessages, setErrorMessages] = useState([]);
   const history = useHistory();
-
+console.log('LoginForm', FormData, errorMessages)
   function handleChange(evt) {
     const { name, value } = evt.target;
     setFormData((formData) => ({
@@ -27,7 +29,6 @@ function LoginForm({ handleLogin }) {
     evt.preventDefault();
     const response = await handleLogin(formData);
     if (response.success === true) {
-      setFormData({ username: "", password: "" });
       history.push("/");
     } else {
       setErrorMessages(["Invald username or password"]);

@@ -14,41 +14,44 @@ import ProfileForm from './ProfileForm';
  *  Redirects to Home
  * */
 
-
+//TODO add docstring
 function Routes({ handleLogin, handleSignUp}) {
     const currentUser = useContext(UserContext);
-
+//Todo 
+console.log('Routes currentUser--->>', currentUser)
     return (
         <Switch>
             
             <Route exact path="/">
-            <Homepage />
+                <Homepage />
             </Route>
             {currentUser ?
-            <>
-            <Route exact path="/companies">
-                <CompanyList />
-            </Route>
-            <Route exact path="/companies/:handle">
-                <CompanyDetail />
-            </Route>
-            <Route exact path="/jobs">
-                <JobList /> 
-            </Route>
-            <Route exact path="/profile">
-                <ProfileForm />
-            </Route>
-            </>
+            <Switch>
+              <Route exact path="/companies">
+                  <CompanyList />
+              </Route>
+              <Route exact path="/companies/:handle">
+                  <CompanyDetail />
+              </Route>
+              <Route exact path="/jobs">
+                 <JobList /> 
+              </Route>
+              <Route exact path="/profile">
+                 <ProfileForm />
+              </Route>
+              <Redirect to="/" /> 
+            </Switch>
             :
-            <>
-            <Route exact path="/login">
-                <LoginForm handleLogin={handleLogin} />
-            </Route>
-            <Route exact path="/signup">
-                <SignupForm handleSignUp={handleSignUp} />
-            </Route> 
-            </>}
-            <Redirect to="/" /> 
+            <Switch>
+              <Route exact path="/login">
+                  <LoginForm handleLogin={handleLogin} />
+              </Route>
+              <Route exact path="/signup">
+                  <SignupForm handleSignUp={handleSignUp} />
+              </Route> 
+              <Redirect to="/" /> 
+            </Switch>}
+            
         </Switch>
     )
 }

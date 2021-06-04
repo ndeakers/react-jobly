@@ -1,27 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
+import UserContext from "./userContext";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
+
 /**
  * /
  * Routes ---> HomePage
- * props: TODO currentUser?
+ * props: none
  *  State: none
+ * context : current user
  * */
 
 function Homepage() {
+  const currentUser = useContext(UserContext);
 
-  return (<h1>Homepage!</h1>)
+  console.log('Homepage user---->', currentUser)
+  return (
+    <div className="homePage container text-center" >
+      <h1>Jobly!</h1>
+      <h4>All the jobs in one, convenient place.</h4>
+      {currentUser?
+      <h4>Welcome back, {currentUser.user.username}</h4>
+      :<>
+      <Link to="/signup" className="btn btn-primary font-weight-bold mr-3">Sign Up</Link>
+      <Link to="/login" className="btn btn-primary font-weight-bold mr-3">Log In</Link>
+      </>
+      }
+    </div>)
 }
 
 export default Homepage;
-
-// pass current user as a prop from app -->> roures >> home page or user it from context
-// Add h1 with jobly name
-// h4 with All the jobs in one, convenient place.
-// after title add ternary
-  // if we have a currnet user
-    //? h4 welcome back, username
-    // : show a div with button links to login and sign up. 
 
 
   

@@ -1,4 +1,4 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import React, { useContext } from "react";
 import UserContext from "./userContext";
 import Container from "react-bootstrap/Container"
@@ -9,11 +9,11 @@ import Nav from "react-bootstrap/Nav"
  * App--> NavBar
  * props: none
  * useContext: uses currentUser to determine whether to show anonymous Nav or Logged in Nav
- *  
+ *  //TODO update docstroing
  * */
 function NavBar({logout}) {
   const currentUser = useContext(UserContext);
-  console.log("currentUser in Nav", currentUser);
+  console.log("NavBar currentUser in Nav", currentUser);
   return (
     <Navbar bg="dark" variant="dark" className="navbar">
       {currentUser === null

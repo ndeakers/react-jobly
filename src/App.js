@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect} from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from './Routes';
 import NavBar from './NavBar';
@@ -21,14 +21,14 @@ import UserContext from "./userContext";
     useEffect: get currentUser and set to state.
  *  App ---> NavBar, Routes
  */
-
+//TODO add isLoaded to docstring
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoadingUser, setIsLoadingUser] = useState(Boolean(token));  // todo change the name
 
-  console.log("App currentUser", currentUser);
+  console.log("App", currentUser, token, errorMessages, isLoadingUser);
 
 
   // gets token on login
@@ -38,6 +38,7 @@ function App() {
       console.log('tokenres', tokenRes)
       localStorage.setItem('token', tokenRes.token)
       setToken(tokenRes.token);
+      setIsLoadingUser(true)
       return { success: true };
     } catch (err) {
       return { success: false, errors: err } // throw here handle in login
@@ -50,6 +51,7 @@ function App() {
       const tokenRes = await JoblyApi.register(formData);
       localStorage.setItem('token', tokenRes.token)
       setToken(tokenRes.token);
+      setIsLoadingUser(true)
       return { success: true };
     } catch (err) {
       return { success: false, errors: err } // throw here and handle in sign up
@@ -67,7 +69,7 @@ function App() {
   // decodes the token and puts payload on currentUser
   useEffect(function fetchCurrentUser() {
     async function fetchUser() {
-      if(token) {
+      console.log('APP fetch User')
       try {
         const { username } = jwt_decode(token);
         JoblyApi.token = token;
@@ -81,14 +83,14 @@ function App() {
         console.log('err in lon in', err)
         setErrorMessages(err);
       } 
+    setIsLoadingUser(false)
     }
-    setIsLoaded(false)
-    }
-    fetchUser();
-  }, [token]);
+    console.log('App fetch currnet User', 'isLoadingUser--->>', isLoadingUser, 'token--->>', token )
+    if(isLoadingUser) fetchUser();
+  }, [token, isLoadingUser]);
 
 
-if (isLoaded) {
+if (isLoadingUser) {
   return (
     <div>
       <i className="fas fa-spinner fa-pulse"></i>

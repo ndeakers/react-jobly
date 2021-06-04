@@ -30,7 +30,7 @@ function CompanyList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  console.log('CompanyList' ,companies, searchTerm, errorMessages, isLoading)
   //**Fetch a list of searched companies when search term state changes*/
   useEffect(function fetchCompaniesBySearch() {
     async function searchCompanies() {

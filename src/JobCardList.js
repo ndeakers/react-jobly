@@ -1,5 +1,4 @@
 import React from "react";
-import CompanyDetail from "./CompanyDetail";
 import JobCard from "./JobCard";
 
 
