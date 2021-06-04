@@ -7,13 +7,13 @@ import Nav from "react-bootstrap/Nav"
 
 /**
  * App--> NavBar
- * props: none
+ * props: logout function: handles the logout. Sets state in App.
  * useContext: uses currentUser to determine whether to show anonymous Nav or Logged in Nav
- *  //TODO update docstroing
  * */
-function NavBar({logout}) {
+function NavBar({ logout }) {
   const currentUser = useContext(UserContext);
   console.log("NavBar currentUser in Nav", currentUser);
+
   return (
     <Navbar bg="dark" variant="dark" className="navbar">
       {currentUser === null

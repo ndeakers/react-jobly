@@ -5,17 +5,19 @@ import Button from "react-bootstrap/Button"
 import DisplayError from './DisplayError';
 /**
  * /login
- * props: handleLogin fn
+ * props: handleLogin fn: handles login form data. sets state in App.
  * state: formData
+ * state: errorMessages: an array of error messages to be displayed
+ * useHistory(): redirects to homepage after successful login
  * */
-
-//TODO docstring update
 
 function LoginForm({ handleLogin }) {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errorMessages, setErrorMessages] = useState([]);
   const history = useHistory();
-console.log('LoginForm', FormData, errorMessages)
+  console.log('LoginForm formData, errorMessages ---> ', formData, errorMessages)
+
+
   function handleChange(evt) {
     const { name, value } = evt.target;
     setFormData((formData) => ({

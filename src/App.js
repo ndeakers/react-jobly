@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from './Routes';
 import NavBar from './NavBar';
@@ -15,20 +15,20 @@ import UserContext from "./userContext";
  * state: currentUser - { id, title, companyHandle, companyName, state }
  * state: token: a token string
  * state: errorMessages: array of error messages
+ * state: isLoading: Boolean dependent on token. If true, fetchUser is called.
  * 
     fn- handleLogin: makes call to get token and sets token
     fn- handleSignUp: makes call to get token and sets token
     useEffect: get currentUser and set to state.
  *  App ---> NavBar, Routes
  */
-//TODO add isLoaded to docstring
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoadingUser, setIsLoadingUser] = useState(Boolean(token));  // todo change the name
+  const [isLoading, setisLoading] = useState(Boolean(token));
 
-  console.log("App", currentUser, token, errorMessages, isLoadingUser);
+  console.log("App", currentUser, token, errorMessages, isLoading);
 
 
   // gets token on login
@@ -38,7 +38,7 @@ function App() {
       console.log('tokenres', tokenRes)
       localStorage.setItem('token', tokenRes.token)
       setToken(tokenRes.token);
-      setIsLoadingUser(true)
+      setisLoading(true)
       return { success: true };
     } catch (err) {
       return { success: false, errors: err } // throw here handle in login
@@ -47,19 +47,20 @@ function App() {
 
   // gets token on register
   async function handleSignUp(formData) {
+    console.log("App, signup, formdata", formData)
     try {
       const tokenRes = await JoblyApi.register(formData);
-      localStorage.setItem('token', tokenRes.token)
+      localStorage.setItem('token in SignUp', tokenRes.token)
       setToken(tokenRes.token);
-      setIsLoadingUser(true)
+      setisLoading(true)
       return { success: true };
     } catch (err) {
       return { success: false, errors: err } // throw here and handle in sign up
     }
   }
 
-/** Log out a user -- setcurrent user and token to null */
-  function logout(){
+  /** Log out a user -- setcurrent user and token to null */
+  function logout() {
     setToken("");
     setCurrentUser(null)
     localStorage.removeItem('token');
@@ -82,27 +83,27 @@ function App() {
       } catch (err) {
         console.log('err in lon in', err)
         setErrorMessages(err);
-      } 
-    setIsLoadingUser(false)
+      }
+      setisLoading(false)
     }
-    console.log('App fetch currnet User', 'isLoadingUser--->>', isLoadingUser, 'token--->>', token )
-    if(isLoadingUser) fetchUser();
-  }, [token, isLoadingUser]);
+    console.log('App fetch currnet User', 'isLoading--->>', isLoading, 'token--->>', token)
+    if (isLoading) fetchUser();
+  }, [token, isLoading]);
 
 
-if (isLoadingUser) {
+  if (isLoading) {
+    return (
+      <div>
+        <i className="fas fa-spinner fa-pulse"></i>
+        <h2>Loading...</h2>
+      </div>
+    )
+  }
   return (
-    <div>
-      <i className="fas fa-spinner fa-pulse"></i>
-      <h2>Loading...</h2>
-    </div>
-  )
-}
-return (
     <div className="App">
       <BrowserRouter>
         <UserContext.Provider value={currentUser}>
-          <NavBar logout={logout}/>
+          <NavBar logout={logout} />
           <Routes handleLogin={handleLogin} handleSignUp={handleSignUp} errorMessages={errorMessages} />
         </UserContext.Provider>
       </BrowserRouter>

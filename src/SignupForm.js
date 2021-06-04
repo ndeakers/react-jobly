@@ -25,6 +25,8 @@ function SignupForm({ handleSignUp }) {
   const history = useHistory();
   const [errorMessages, setErrorMessages] = useState([]);
 
+  console.log("SignUpForm, formData, errorMessages", formData, errorMessages)
+
   function handleChange(evt) {
     const { name, value } = evt.target;
     setFormData((formData) => ({
