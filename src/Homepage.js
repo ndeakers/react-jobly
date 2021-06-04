@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
  * /
  * Routes ---> HomePage
  * props: TODO currentUser?
- *  
+ *  State: none
  * */
 
 function Homepage() {

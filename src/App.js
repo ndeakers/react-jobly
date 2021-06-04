@@ -139,3 +139,16 @@ export default App;
   // otherwise set errors
 
 
+
+// we haven't worked on apply feature
+  // add apply func in api
+  // in job card
+    // add a piece of start to check if current user applied for this job or not
+    // add apply button
+    // add handle click
+        // calls api apply func
+        // add job id to user
+
+    // if user applied show applied button, otherwise show apply button. 
+      // maybe use diable feature or a new button.
+
