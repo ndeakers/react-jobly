@@ -67,7 +67,7 @@ function App() {
   // decodes the token and puts payload on currentUser
   useEffect(function fetchCurrentUser() {
     async function fetchUser() {
-
+      if(token) {
       try {
         const { username } = jwt_decode(token);
         JoblyApi.token = token;
@@ -80,24 +80,22 @@ function App() {
       } catch (err) {
         console.log('err in lon in', err)
         setErrorMessages(err);
-      } finally{
-        setIsLoaded(false)
-      }
+      } 
     }
-    if (token) {
-      fetchUser();
+    setIsLoaded(false)
     }
+    fetchUser();
   }, [token]);
 
 
-// if (isLoaded) {
-//   return (
-//     <div>
-//       <i className="fas fa-spinner fa-pulse"></i>
-//       <h2>Loading...</h2>
-//     </div>
-//   )
-// }
+if (isLoaded) {
+  return (
+    <div>
+      <i className="fas fa-spinner fa-pulse"></i>
+      <h2>Loading...</h2>
+    </div>
+  )
+}
 return (
     <div className="App">
       <BrowserRouter>
