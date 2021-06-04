@@ -14,39 +14,39 @@ import Button from 'react-bootstrap/Button'
  * 
  * Renders search form
  */
-function SearchForm({ handleSave, searchTerm}) {
+function SearchForm({ handleSave, searchTerm }) {
   const [formData, setFormData] = useState("");
-    // console.log('formData--->>', formData)
-  
+  // console.log('formData--->>', formData)
+
 
   /** Handles form changes */
   function handleChange(evt) {
     setFormData(evt.target.value)
   }
-//end
+  //end
 
   /** Handles form submition */
   function handleSubmit(evt) {
-  
+
     evt.preventDefault();
     handleSave(formData);
   }
 
 
   return (
-   <Form inline onSubmit={handleSubmit} className="justify-content-center">
-        <FormControl 
-                type="text" 
-                placeholder="Search" 
-                className="mr-sm-2"  
-                name="searchForm"
-                value={formData.searchForm} 
-                onChange={handleChange}
-        /> 
-        <Button 
-            type="submit"
-            variant="primary">
-            Search
+    <Form inline onSubmit={handleSubmit} className="justify-content-center">
+      <FormControl
+        type="text"
+        placeholder="Search"
+        className="mr-sm-2"
+        name="searchForm"
+        value={formData.searchForm}
+        onChange={handleChange}
+      />
+      <Button
+        type="submit"
+        variant="primary">
+        Search
         </Button>
     </Form>
   )
