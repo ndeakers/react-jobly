@@ -19,18 +19,18 @@ function NavBar({logout}) {
       {currentUser === null
         ? <Container className="Navbar-anon">
           <Nav className="me-auto">
-            <NavLink to="/">Jobly</NavLink>
-            <NavLink to="/signup">Sign Up</NavLink>
-            <NavLink to="/login">Log In</NavLink>
+            <NavLink exact to="/" id="jobly">Jobly</NavLink>
+            <NavLink exact to="/signup">Sign Up</NavLink>
+            <NavLink exact to="/login">Log In</NavLink>
           </Nav>
         </Container>
         : <Container className="Navbar-loggedin">
           <Nav className="me-auto">
-            <NavLink to="/">Jobly</NavLink>
-            <NavLink to="/companies">Companies</NavLink>
-            <NavLink to="/jobs">Jobs</NavLink>
-            <NavLink to="/profile">Profile</NavLink>
-            <NavLink onClick={logout} to="/">Logout</NavLink>
+            <NavLink exact to="/">Jobly</NavLink>
+            <NavLink exact to="/companies">Companies</NavLink>
+            <NavLink exact to="/jobs">Jobs</NavLink>
+            <NavLink exact to="/profile">Profile</NavLink>
+            <NavLink onClick={logout} exact to="/">Logout</NavLink>
           </Nav>
         </Container>}
 
