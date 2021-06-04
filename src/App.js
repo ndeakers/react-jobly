@@ -111,9 +111,31 @@ return (
 
 export default App;
 
+// updates user profile
+// make update function is api.
+// make aysnc handleupdate in app that will take formdata as parameter 
+  // call update function from api and set response to variable . try/catch
+  // set current user from old user to new user....
 
 
+// in profile form
+  // pass handleupdate as prop, 
+    // current usre as a prop or context
+// state
+  // formdata . initial data with be from current user
+  // errormessages
+  // history
+  // maybe isupdated to display message if updated Successfully 
 
-// const username = decodedToken.username;
+
+//handle change -- boilerplate
+// handle submit
+  //evt default
+  // ?set isupdated
+  // call handleupdate 
+  // if reseponse success
+  // set formdata
+  // history push
+  // otherwise set errors
 
 
