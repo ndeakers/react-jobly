@@ -24,8 +24,9 @@ import UserContext from "./userContext";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(localStorage.getItem('token'));
   const [errorMessages, setErrorMessages] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   console.log("App currentUser", currentUser);
 
@@ -35,6 +36,7 @@ function App() {
     try {
       const tokenRes = await JoblyApi.login(formData);
       console.log('tokenres', tokenRes)
+      localStorage.setItem('token', tokenRes.token)
       setToken(tokenRes.token);
       return { success: true };
     } catch (err) {
@@ -46,12 +48,23 @@ function App() {
   async function handleSignUp(formData) {
     try {
       const tokenRes = await JoblyApi.register(formData);
+      localStorage.setItem('token', tokenRes.token)
       setToken(tokenRes.token);
       return { success: true };
     } catch (err) {
       return { success: false, errors: err } // throw here and handle in sign up
     }
   }
+
+/** Log out a user -- setcurrent user and token to null */
+  function logout(){
+    setToken("");
+    setCurrentUser(null)
+    // localStorage.clear();
+
+  };
+
+
 
   // decodes the token and puts payload on currentUser
   useEffect(function fetchCurrentUser() {
@@ -69,28 +82,37 @@ function App() {
       } catch (err) {
         console.log('err in lon in', err)
         setErrorMessages(err);
+      } finally{
+        setIsLoaded(true)
       }
     }
     if (token) {
+      setIsLoaded(false)
       fetchUser();
     }
   }, [token]);
 
 
-
-
-  return (
+if (isLoaded) {
+return (
     <div className="App">
       <BrowserRouter>
         <UserContext.Provider value={currentUser}>
-          <NavBar />
+          <NavBar logout={logout}/>
           <Routes handleLogin={handleLogin} handleSignUp={handleSignUp} errorMessages={errorMessages} />
         </UserContext.Provider>
       </BrowserRouter>
-
     </div>
   )
 }
+  return (
+      <div>
+        <i className="fas fa-spinner fa-pulse"></i>
+        <h2>Loading...</h2>
+      </div>
+    )
+}
+
 
 export default App;
 

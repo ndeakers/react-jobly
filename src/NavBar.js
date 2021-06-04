@@ -11,7 +11,7 @@ import Nav from "react-bootstrap/Nav"
  * useContext: uses currentUser to determine whether to show anonymous Nav or Logged in Nav
  *  
  * */
-function NavBar() {
+function NavBar({logout}) {
   const currentUser = useContext(UserContext);
   console.log("currentUser in Nav", currentUser);
   return (
@@ -30,6 +30,7 @@ function NavBar() {
             <NavLink to="/companies">Companies</NavLink>
             <NavLink to="/jobs">Jobs</NavLink>
             <NavLink to="/profile">Profile</NavLink>
+            <NavLink onClick={logout} to="/">Logout</NavLink>
           </Nav>
         </Container>}
 

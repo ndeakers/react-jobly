@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from "react";
+import UserContext from "./userContext";
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Homepage from './Homepage';
 import CompanyList from './CompanyList';
@@ -7,6 +8,8 @@ import JobList from './JobList';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import ProfileForm from './ProfileForm';
+
+
 /**
  *  Routes for Jobly App
  * 
@@ -14,12 +17,17 @@ import ProfileForm from './ProfileForm';
  * */
 
 
-function Routes({ handleLogin, handleSignUp, errorMessages }) {
+function Routes({ handleLogin, handleSignUp}) {
+    const currentUser = useContext(UserContext);
+
     return (
         <Switch>
+            
             <Route exact path="/">
-                <Homepage />
+            <Homepage />
             </Route>
+            {currentUser ?
+            <>
             <Route exact path="/companies">
                 <CompanyList />
             </Route>
@@ -27,18 +35,22 @@ function Routes({ handleLogin, handleSignUp, errorMessages }) {
                 <CompanyDetail />
             </Route>
             <Route exact path="/jobs">
-                <JobList />
+                <JobList /> 
             </Route>
+            <Route exact path="/profile">
+                <ProfileForm />
+            </Route>
+            </>
+            :
+            <>
             <Route exact path="/login">
                 <LoginForm handleLogin={handleLogin} />
             </Route>
             <Route exact path="/signup">
                 <SignupForm handleSignUp={handleSignUp} />
-            </Route>
-            <Route exact path="/profile">
-                <ProfileForm />
-            </Route>
-            <Redirect to="/" />
+            </Route> 
+            </>}
+            <Redirect to="/" /> 
         </Switch>
     )
 }
