@@ -26,7 +26,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [errorMessages, setErrorMessages] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
 
   console.log("App currentUser", currentUser);
 
@@ -60,10 +60,8 @@ function App() {
   function logout(){
     setToken("");
     setCurrentUser(null)
-    // localStorage.clear();
-
+    localStorage.removeItem('token');
   };
-
 
 
   // decodes the token and puts payload on currentUser
@@ -83,17 +81,23 @@ function App() {
         console.log('err in lon in', err)
         setErrorMessages(err);
       } finally{
-        setIsLoaded(true)
+        setIsLoaded(false)
       }
     }
     if (token) {
-      setIsLoaded(false)
       fetchUser();
     }
   }, [token]);
 
 
-if (isLoaded) {
+// if (isLoaded) {
+//   return (
+//     <div>
+//       <i className="fas fa-spinner fa-pulse"></i>
+//       <h2>Loading...</h2>
+//     </div>
+//   )
+// }
 return (
     <div className="App">
       <BrowserRouter>
@@ -104,13 +108,6 @@ return (
       </BrowserRouter>
     </div>
   )
-}
-  return (
-      <div>
-        <i className="fas fa-spinner fa-pulse"></i>
-        <h2>Loading...</h2>
-      </div>
-    )
 }
 
 
